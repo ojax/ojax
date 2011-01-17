@@ -1,0 +1,23 @@
+{% load i18n %}
+
+{% if profile_form.errors %}
+    <p class="error">{% trans "Please correct the errors below:" %}</p>
+{% endif %}
+<form method="POST" action="{% url profile_edit %}" id="profile-form">
+    {% csrf_token %}
+{% for field in profile_form %}
+<div class="form-item">
+    <label for="">
+        {{ field.label }}: <span>{{ field.help_text }}</span>
+    </label>
+    {{ field }}{{ field.errors }}
+</div>
+{% endfor %}
+</form>
+{% include "basic_profiles/profile_apps_edit.html" %}
+
+<div class="form-buttons">
+    <!-- <a href="#" class="back-link">« Cancel</a> -->
+    <a href="#" class="yum-button save-profile"><span>Save Profile</span></a>
+</div>
+

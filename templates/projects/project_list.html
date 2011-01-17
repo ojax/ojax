@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load ifsetting_tag %}
+{% load account_tags %}
+
+{% block head_title %}{% trans "Your Projects" %}{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block body %}
+	
+	<h1 class="no-seperator">Your Projects <a href="{% url new_project %}" class="yum-button new-project"><span>Create a New Project</span></a></h1>
+	
+	{% for project in projects %}
+	<a href="{% url project_view project.id %}" class="project-list-item"> 
+        {{project.title}}<span>{{project.description}}</span>
+    </a>
+    {% endfor %}
+		
+        {# {% for item in items %} #}
+        {#  <div class="activity meta-user-{{item.username}} meta-type-{{item.type}} {% for tag in item.tags.all %}meta-tag-{{tag}} {% endfor %} meta-timestamp-{{ item.created|date:"U" }}"> #}
+        {#         <span class="activity-source"><span><img src="{{ STATIC_URL }}images/icons/{{item.source}}-24x24.png" alt="">{{item.type|capfirst}}</span></span> #}
+        {#         <a href="{% firstof item.url "#" %}" class="activity-title" title="{{item.title}}">{{item.title|truncatewords:3}}</a> #}
+        {#         <span class="activity-meta">— {{item.type|capfirst}} by {{item.username}}, {{ item.created|timesince }} ago.</span> #}
+        {#  #}
+        {#         <a href="#" class="yum-button comment"><span>0 Comments</span></a> #}
+        {#         <a href="#" class="actions"></a> #}
+        {#     </div> #}
+        {# {% endfor %} #}
+
+	
+{% endblock body %}
+
+{% block extra_body %}
+
+
+{% endblock extra_body %}

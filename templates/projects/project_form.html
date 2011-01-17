@@ -1,0 +1,15 @@
+<form method="POST" action="{% url new_project %}" id="new-project-form">
+    {% csrf_token %}
+{% for field in project_form %}
+<div class="form-item">
+    <label for="">
+        {{ field.label }}: <span>{{ field.help_text }}</span>
+    </label>
+    {{ field }}
+</div>
+{% endfor %}
+<div class="form-buttons">
+    <a href="{% url project_list %}" class="back-link">« Cancel</a>
+    <a href="#" class="yum-button create-project"><span>Create New Project</span></a>
+</div>
+</form>

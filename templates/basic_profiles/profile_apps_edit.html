@@ -1,0 +1,333 @@
+<div class="source-applications-item">
+
+    <label for="" class="source-label">Source Applications: <span>These are the services that OJAX++ will aggregate</span></label>
+		
+	<div class="source-applications-wrapper">
+        <div class="app-categories">
+    		<a href="#" class="button-1 app-button">All Applications</a>
+    		<a href="#" class="button-2 app-button">Bookmarking/Citations</a>
+    		<a href="#" class="button-3 app-button">Communication</a>
+    		<a href="#" class="button-4 app-button">Media</a>
+    		<a href="#" class="button-5 app-button">Research</a>
+        </div>
+        
+		<ul id="applications-container" class="app-list">
+		
+			<li class="app-container" id="blog-app"><h2 class="app-name">Blog</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="blog" /> 
+	        <input type="text" title="Username" name="username" class="username-input" value="" id="username" /> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="connotea-app"><h2 class="app-name">Connotea</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="connotea" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="delicious-app"><h2 class="app-name">Delicious{% if delicious_app %}<span class="validated"> - Validated</span>{% endif %}</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="delicious" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="{{delicious_app.0.username}}" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="diigo-app"><h2 class="app-name">Diigo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="dimeo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="email-app"><h2 class="app-name">Email</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="email" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="flickr-app"><h2 class="app-name">Flickr</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="flickr" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="google-app"><h2 class="app-name">Google</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="google" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="wave-app"><h2 class="app-name">Google Wave</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="googlewave" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="linkedin-app"><h2 class="app-name">LinkedIn</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="linkedin" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="myexperiment-app"><h2 class="app-name">myExperiment</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="myexperiment" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="twitter-app"><h2 class="app-name">Twitter</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="twitter" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="stumble-app"><h2 class="app-name">StumbleUpon</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="stumbleupon" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="vimeo-app"><h2 class="app-name">Vimeo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="vimeo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="yahoo-app"><h2 class="app-name">Yahoo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="yahoo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="youtube-app"><h2 class="app-name">Youtube</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="youtube" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+		</ul>
+	
+		<ul id="all-applications" class="app-list" style="display:none;">
+		
+			<li class="app-container" id="blog-app"><h2 class="app-name">Blog</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="blog" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="connotea-app"><h2 class="app-name">Connotea</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="connotea" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="delicious-app"><h2 class="app-name">Delicious{% if delicious_app %}<span class="validated"> - Validated</span>{% endif %}</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="delicious" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="{{delicious_app.0.username}}" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="diigo-app"><h2 class="app-name">Diigo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="diigo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="email-app"><h2 class="app-name">Email</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="email" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="flickr-app"><h2 class="app-name">Flickr</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="flickr" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="google-app"><h2 class="app-name">Google</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="google" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="wave-app"><h2 class="app-name">Google Wave</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="googlewave" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="linkedin-app"><h2 class="app-name">LinkedIn</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="linkedin" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="myexperiment-app"><h2 class="app-name">myExperiment</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="myexperiment" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="twitter-app"><h2 class="app-name">Twitter</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="twitter" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="stumble-app"><h2 class="app-name">StumbleUpon</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="stumbleupon" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="vimeo-app"><h2 class="app-name">Vimeo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="vimeo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="yahoo-app"><h2 class="app-name">Yahoo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="yahoo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="youtube-app"><h2 class="app-name">Youtube</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="youtube" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+		</ul>
+	
+		<ul id="bookmarking-applications" class="app-list" style="display:none;">
+		
+			<li class="app-container" id="connotea-app"><h2 class="app-name">Connotea</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="connotea" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="delicious-app"><h2 class="app-name">Delicious{% if delicious_app %}<span class="validated"> - Validated</span>{% endif %}</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="delicious" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="{{delicious_app.0.username}}" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="diigo-app"><h2 class="app-name">Diigo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="diigo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="google-app"><h2 class="app-name">Google</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="google" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="stumble-app"><h2 class="app-name">StumbleUpon</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="stumbleupon" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="yahoo-app"><h2 class="app-name">Yahoo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="yahoo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+		</ul>
+	
+		<ul id="communication-applications" class="app-list" style="display:none;">
+		
+			<li class="app-container" id="blog-app"><h2 class="app-name">Blog</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="blog" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="email-app"><h2 class="app-name">Email</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="email" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="google-app"><h2 class="app-name">Google</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="google" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="wave-app"><h2>Google Wave</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="googlewave" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="twitter-app"><h2 class="app-name">Twitter</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="twitter" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="yahoo-app"><h2 class="app-name">Yahoo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="yahoo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+		</ul>
+	
+		<ul id="media-applications" class="app-list" style="display:none;">
+		
+			<li class="app-container" id="flickr-app"><h2 class="app-name">Flickr</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="flickr" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="vimeo-app"><h2 class="app-name">Vimeo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="vimeo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="youtube-app"><h2 class="app-name">Youtube</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="youtube" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+		</ul>
+	
+		<ul id="research-applications" class="app-list" style="display:none;">
+		
+			<li class="app-container" id="connotea-app"><h2 class="app-name">Connotea</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="connotea" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="diigo-app"><h2 class="app-name">Diigo</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="diigo" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="myexperiment-app"><h2 class="app-name">myExperiment</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="myexperiment" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+			<li class="app-container" id="twitter-app"><h2 class="app-name">Twitter</h2> 
+	    <form action="/profiles/edit/external_app/" method="post" class="app-form"><input type="hidden" name="application" value="twitter" /> 
+	        <input type="text" title="Username" name="username"  class="username-input" value="" id="username"> 
+		<p><input type="submit" value="Save" class="submit-button"></p> 
+	    </form></li>
+
+		</ul>
+		<div style="clear:both;"></div>
+	</div>
+</div>

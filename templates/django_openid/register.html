@@ -1,0 +1,51 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+
+{% block head_title %}{% trans "Choose a Username" %}{% endblock %}
+
+{% block body %}
+    <h1 class="no-seperator">{% trans "Choose a Username" %}</h1>
+    
+    {% if form.errors %}
+        <p class="error">{% trans "Please correct the errors below:" %}</p>
+    {% endif %}
+    
+    {# <p>{% blocktrans %}Now that you have logged in with your OpenID, we need you to choose a username for this site.{% endblocktrans %}</p> #}
+    
+    
+    
+    <form class="signup" id="create-account" method="POST" action="">
+        {% csrf_token %}
+        {% for field in form %}
+        {% if field.is_hidden %}
+        {{ field }}
+        {% else %}
+        <div class="form-item">
+            <label for="">
+                {{ field.label }}: <span>{{ field.help_text }}</span>
+            </label>
+            {{ field }}{{ field.errors }}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </form>
+    
+    <div class="form-buttons">
+        <!-- <a href="#" class="back-link">« Cancel</a> -->
+        <a href="#" class="yum-button signup-openid"><span>Sign Up &raquo;</span></a>
+    </div>
+    
+    <script type="text/javascript">
+        $(".signup-openid").click(function(){
+            $("form#create-account").submit();
+            return false
+        })
+    </script>
+    
+    {% url acct_login_openid as acct_login_openid_url %}
+    {% url terms as terms_url %}
+    {% url privacy as privacy_url %}
+    {# <p>{% blocktrans %}<strong>Already have an account?</strong> <a href="{{ acct_login_openid_url }}">Login here</a> to associate your OpenID with your existing account.{% endblocktrans %}</p> #}
+{% endblock %}

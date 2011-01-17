@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load ifsetting_tag %}
+{% load account_tags %}
+
+{% block head_title %}{% trans "Super Secret Project Management App" %}{% endblock %}
+
+{% block extra_head %}
+<script src="{{ STATIC_URL }}js/mustache.js"></script>
+<script src="{{ STATIC_URL }}js/tsort.js"></script>
+{% endblock %}
+
+{% block body %}
+	
+	<h1>{{project.title}} {# <a href="#" class="yum-button edit-project"><span>Edit Project</span></a> #}</h1>
+	<div id="project-description">{{project.description}}</div>
+	
+	<div id="filter-bar">
+		<h3>Filter Bar</h3>
+	</div>
+	<div id="filter-container">
+		<div id="filter-sort-control">
+			<h4>Sort</h4>
+			<a href="#" class="filter-button selected" id="filter-newest"><span>Newest First</span></a>
+			<a href="#" class="filter-button" id="filter-oldest"><span>Oldest First</span></a>
+			<a href="#" class="filter-button" id="filter-active"><span>Recently Active</span></a>
+		</div>
+		<div id="filter-tags-control" class="filter-options-container">
+			<h4>Tags {# <a href="#">Manage Tags</a> #}</h4>
+			<a href="#" class="filter-button all selected"><span>All</span></a>
+			{% for tag in project.tags.all %}
+				<a href="#" class="filter-button" id="filter-tag-{{tag|lower}}"><span><strong>{{tag}}</strong></span></a>
+			{% endfor %}
+		</div>
+		<div id="filter-users-control" class="filter-options-container">
+			<h4>Users {# <a href="#">Manage Users</a> #}</h4>
+			<a href="#" class="filter-button all selected"><span>All</span></a>
+			<a href="#" class="filter-button" id="filter-user-Dave"><span>Dave J.</span></a>
+			<a href="#" class="filter-button" id="filter-user-Judith"><span>Judith W.</span></a>
+			<a href="#" class="filter-button" id="filter-user-{{request.user}}"><span>{{request.user}}</span></a>
+            {# <a href="#" class="filter-button" id="filter-user-3"><span>Martine McG.</span></a> #}
+		</div>
+		<div id="filter-type-control" class="filter-options-container">
+			<h4>Type {# <a href="#">Manage Apps</a> #}</h4>
+			<a href="#" class="filter-button all selected"><span>All</span></a>
+			<a href="#" class="filter-button" id="filter-type-note"><span>Note</span></a>
+			<a href="#" class="filter-button" id="filter-type-email"><span>Email</span></a>
+			<a href="#" class="filter-button" id="filter-type-bookmark"><span>Bookmark</span></a>
+			<a href="#" class="filter-button" id="filter-type-activity"><span>Activity</span></a>
+			<a href="#" class="filter-button" id="filter-type-citation"><span>Citation</span></a>
+			<a href="#" class="filter-button" id="filter-type-workflow"><span>Workflow</span></a>
+		</div>
+	</div>
+	<div href="#" id="updates-container"></div>
+	<div id="activity-stream">
+		
+		{% for item in items %}
+			<div class="activity meta-user-{{item.username}} meta-type-{{item.type}} {% for tag in item.tags.all %}meta-tag-{{tag|lower}} {% endfor %}">
+		        <span class="activity-source"><span><img src="{{ STATIC_URL }}images/icons/{{item.source}}-24x24.png" alt="">{{item.type|capfirst}}</span></span>
+		        <a href="{% firstof item.url "#" %}" class="activity-title" title="{{item.title}}">{{item.title|truncatewords:3}}</a>
+		        <span class="activity-meta">— {{item.type|capfirst}} by {{item.username}}, <em id="timestamp-{{ item.created|date:"U" }}">{{ item.created|timesince }}</em> ago.</span>
+		        <a href="#" class="yum-button comment"><span id="activity-timestamp-{% firstof item.activitycomment_set.latest.pub_date|date:"U" item.created|date:"U" %}">{{item.activitycomment_set.all.count}} Comments</span></a>
+		        <a href="#" class="actions"></a>
+		        
+		        <div class="comments-container">
+                    <ol class="comment-list">
+                        {% for comment in item.activitycomment_set.all %}
+                        <li class="comment-body">
+                            <div class="comment-meta">
+                                <div class="comment-time">{{ comment.pub_date|timesince }}</div>
+                                <div class="comment-author"><em>{{ comment.author }}</em> said:</div>
+                            </div>
+                            
+                            <p>{{comment.comment}}</p>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                    <div class="make-coment">
+                        <form method="POST" action="{% url make_comment %}" class="comment-box">
+                            {% csrf_token %}
+                            <input type="hidden" name="activity_id" value="{{item.id}}">
+                            <input type="submit" style="float:right; margin-top:80px; padding:5px" class="comment-submit" value="Save Comment"> 
+                            <textarea id="" cols="70" rows="5"name="comment" style="float:right; margin:10px; padding:5px"></textarea> 
+                        </form>
+                        
+                        <div style="clear:both"></div> 
+                    </div>
+		        </div>
+
+		    </div>
+	    {% empty %}
+            <p class="activitystream_info">This project's activity stream is empty! To add content simply tag something using one of these tags: <em>{% for tag in project.tags.all %}{{tag}}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</em>.</p>
+        {% endfor %}
+
+   	</div>		
+	
+{% endblock body %}
+
+{% block extra_body %}
+<script type="text/javascript">
+
+update_stamp = {% firstof items.0.created|date:"U" "0" %};
+
+
+(function($) {
+    $.poll = function(options){
+        var $this = $(this);
+
+        var opts = $.extend({}, $.poll.defaults, options);
+        setInterval(update, opts.interval);
+
+        function update(){
+            $.ajax({
+                type: opts.type,
+                url: opts.url,
+                dataType: opts.dataType,
+                success: opts.success
+            });
+        };
+    };
+
+    $.poll.defaults = {
+        type: "POST",
+        url: ".",
+        success: '',
+        interval: 2000,
+        dataType: "json"
+    };
+})(jQuery);
+
+$("#filter-newest").click(function(){
+    $("div.activity").tsort(".activity-meta>em", {attr:"id", order:"desc"});
+})
+$("#filter-oldest").click(function(){
+    $("div.activity").tsort(".activity-meta>em", {attr:"id", order:"asc"});
+})
+$("#filter-active").click(function(){
+    $("div.activity").tsort(".comment>span", {attr:"id", order:"desc"});
+})
+
+function updateDelicious (data) {
+	console.log("1: "+data)
+	if ( parseInt(data) > 0) {
+		$.getJSON('/projects/json/?dt='+update_stamp+'&id='+{{project.id}}, function(data) {
+		    update_stamp = Math.round(new Date().getTime() / 1000)
+            console.log("2: "+data)
+			console.log("len(2): "+data.length)
+            activity_view = {
+            "items": data,
+            "capitalise": function() {
+              return function(text, render) {
+                  return render(text).substr(0, 1).toUpperCase() + render(text).substr(1);
+              }
+            }}
+
+			if (parseInt(data.length) > 0) {
+                $("#updates-container").addClass("new-activities");
+                $("#updates-container").html("<strong><em>"+data.length+"</em> new activities.</strong> (Click here to view them on activity stream)")
+        	}
+        });
+	}
+}
+
+previous_updates = 0;
+
+
+$(document).ready(function(){
+	
+	// This code is for demo purposes, it will be moved into the activity stream scraper at some point.
+	
+	$.getJSON('/activity/update_delicious/?username={{delicious_username}}', updateDelicious);
+
+	$.ajax({
+	    url: "http://feeds.delicious.com/v2/json/{{delicious_username}}",
+	    type: "GET",
+	    dataType: "jsonp",
+	    success: function(data){
+	     console.log(data);
+	     initial_data = data;
+	    }
+	});
+
+
+});
+
+$.poll({
+    url: "http://feeds.delicious.com/v2/json/{{delicious_username}}",
+    interval: 30000,
+    type: "GET",
+    dataType: "jsonp",
+    success: function(data){
+        var updates = updatesToJSONFeed(initial_data, data);
+        console.log(updates);
+
+        if (updates > previous_updates) {
+            $.getJSON('/activity/update_delicious/?username={{delicious_username}}', updateDelicious);
+        }
+        previous_updates = updates
+    }
+});
+
+        $("form.comment-box").submit(function(){
+            c_container = this;
+            if ($(this).children("textarea").val() != "") {
+                $.post($(this).attr("action"), $(this).serialize(), function (data) {
+                    console.log("D: "+data)
+                    // if (data == true) {
+                        console.log("in");
+                        var text = $(c_container).children("textarea").val();
+                        console.log(text);
+        
+        
+                        var comment_list = $(c_container).parent().parent().children(".comment-list");
+                        console.log(comment_list);
+                        var comment = comment_list.append(
+                            "<li class='comment-body'><div class='comment-meta'><div class='comment-time'>Just now</div><div class='comment-author'><em>{{request.user}}</em> said:</div></div><p>"+text+"</p></li>"
+                        );
+
+						var comment_notification = $(c_container).parent().parent().parent().children("a.comment");
+						var num_comments = parseInt(comment_notification.text().slice(0, -9));
+						num_comments = num_comments + 1;
+
+						var comment_time = Math.round(new Date().getTime() / 1000)
+						comment_notification.html('<span id="activity-timestamp-'+comment_time+'">'+num_comments+' Comments</span>');
+        
+                        comment.slideDown();
+        
+                        $(c_container).children("textarea").val("");
+                    // }
+                });
+            }
+            return false;
+        });
+        
+
+
+
+	    // var updates = 1;
+	    // if (updates) {
+	    //      $("#updates-container").addClass("new-activities");
+	    //      $("#updates-container").html("<strong><em>"+updates+"</em> new activities.</strong> (Click here to view them on the activity stream)")
+	    //  }
+
+        $(".new-activities").live("click", function(){
+            $(".activitystream_info").hide();
+			$('#activity-stream').prepend(Mustache.to_html(activity_template, activity_view));
+			$("#updates-container").removeClass("new-activities");
+        })
+
+</script>
+
+{% endblock extra_body %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% blocktrans %}Edit Profile{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.quicksand.js"></script>
+{% endblock %}
+
+{% block body %}
+    
+    <h1 class="no-seperator">{% trans "Edit Your Profile" %}</h1> 
+    
+    {% include "basic_profiles/profile_form.html" %}
+    
+    <script type="text/javascript">
+    
+    $(".save-profile").click(function(){
+        $("form#profile-form").submit();
+        return false
+    })
+
+        $(function() {        
+         
+        
+          $('.button-1').click(function(e) {
+            $('#applications-container').quicksand( $('#all-applications li')    , {
+                   attribute: 'id',
+                 }, function() {$(".app-container").click(b);
+             } );
+            e.preventDefault();
+          });
+          $('.button-2').click(function(e) {
+            $('#applications-container').quicksand( $('#bookmarking-applications li')    , {
+                       attribute: 'id',
+                     }, function() {$(".app-container").click(b);
+                 } );
+            e.preventDefault();
+          });
+          $('.button-3').click(function(e) {
+            $('#applications-container').quicksand( $('#communication-applications li')  , {
+                       attribute: 'id',
+                     }, function() {$(".app-container").click(b);
+                 } );
+            e.preventDefault();
+          });
+          $('.button-4').click(function(e) {
+            $('#applications-container').quicksand( $('#media-applications li')  , {
+                       attribute: 'id',
+                     }, function() {$(".app-container").click(b);
+                 } );
+            e.preventDefault();
+          });
+          $('.button-5').click(function(e) {
+            $('#applications-container').quicksand( $('#research-applications li')   , {
+                       attribute: 'id',
+                     }, function() {$(".app-container").click(b);
+                 } );
+            e.preventDefault();
+          });
+        
+         $(".app-container form").hide();
+            $(".app-container.edit-mode form").show();
+            $(".app-container").append("<div class='edit-button'>Click to add/edit</div>");
+            $(".app-container.disabled .edit-button").text("Coming soon");
+            $(".app-container.read-only .edit-button").text("Click to view");
+        
+            function a(c) {
+                $(this).parent().removeClass("edit-mode");
+                $(".app-container form").hide()
+                $(this).parent().click(b);
+            }
+        
+            function b(c) {
+                $(".app-container").click(b);
+                $(".app-container.disabled").unbind("click");
+                $(this).unbind("click");
+                $(".app-container form").hide();
+                $(".app-container").removeClass("edit-mode");
+                $(this).fadeTo("normal", 0.5);
+                $(".app-name", this).slideUp("normal", function () {
+                    $(this).parent().fadeTo("normal", 1);
+                    $(this).parent().addClass("edit-mode");
+                    $(".app-container.edit-mode form").fadeIn();
+                    $(this).slideDown();
+                    $(this).click(a);
+                    //$(".app-container.edit-mode .username-input").focus()
+                })
+            }
+            $(".app-container").click(b);
+            $(".app-container.disabled").unbind("click");
+            $(".app-container form").live("submit", function () {
+                form = this;
+                $.post($(this).attr("action"), $(this).serialize(), function (c) {
+                            if (c == true) {
+                                $(form).siblings("h2").append("<span class='validated'> - Validated</span>").hide();
+                                $(form).siblings("h2").fadeIn("slow", function (d) {
+                                $(form).parent().removeClass("edit-mode");
+                                $(".app-container form").hide()
+                        })
+                            } else {
+                                // $(form).siblings("h2").children("span").fadeOut("slow", function (d) {
+                                    $(form).parent().removeClass("edit-mode");
+                                    $(".app-container form").hide()
+                                    alert("This application is not enabled in the usability test");
+                                // });
+                                // $(form).siblings("h2").children("span").remove()
+                            }
+                        },
+                        "json");
+                return false
+            })
+        
+        });        
+    </script>
+    
+{% endblock %}

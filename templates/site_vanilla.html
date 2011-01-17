@@ -1,0 +1,27 @@
+{% load i18n %}
+<!DOCTYPE HTML>
+<html lang="en-IE">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} : {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/ojax-main.css">
+	
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.openid.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/ojax-main.js"></script>
+	{% block extra_head_base %}
+        {% block extra_head %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+	{% block body %}
+    {% endblock %}
+    
+    </div>
+
+    {% block extra_body_base %}
+        {% block extra_body %}{% endblock %}
+    {% endblock %}
+    
+</body>
+</html>

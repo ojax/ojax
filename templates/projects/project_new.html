@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% blocktrans %}Create a New Project{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tag.editor-min.js"></script>
+{% endblock %}
+
+{% block body %}
+    
+    <h1 class="no-seperator">{% trans "Create a New Project" %}</h1> 
+    
+    {% include "projects/project_form.html" %}
+    
+    <script type="text/javascript">
+	    $(function() {
+	        $("#id_tags").tagEditor({
+	                confirmRemoval: false,
+					separator:",",
+					completeOnSeparator: false
+	        });
+        })
+        
+        $(".create-project").click(function(){
+            $("#new-project-form").submit();
+        })
+    </script>
+    
+{% endblock %}

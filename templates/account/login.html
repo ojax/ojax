@@ -1,0 +1,172 @@
+{% extends "site_vanilla.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+{% load ifsetting_tag %}
+{% load account_tags %}
+
+{% block head_title %}{% trans "Login" %}{% endblock %}
+{% block body %}
+
+<div id="big-logo"><img src="{{ STATIC_URL }}images/ucd-logo-big.png"></div>
+
+<div id="login-container">
+    <h2 class="openid-heading selected">OpenID Login/Signup</h2>
+    <h2 class="normal-signup-heading">Normal Login/Signup</h2>
+    
+    <div id="openid-container">Choose your OpenID account provider:
+    <form class="openid" method="post" action="/openid/register/" id="openid-form"> 
+	{% csrf_token %}
+      <div><ul class="providers"> 
+      <li class="openid" title="OpenID"><img src="{{ STATIC_URL }}images/openid/openidW.png" alt="icon" /> 
+      <span><strong>http://{your-openid-url}</strong></span></li> 
+      <li class="direct" title="Google"> 
+    		<img src="{{ STATIC_URL }}images/openid/googleW.png" alt="icon" /><span>https://www.google.com/accounts/o8/id</span></li> 
+      <li class="direct" title="Yahoo"> 
+    		<img src="{{ STATIC_URL }}images/openid/yahooW.png" alt="icon" /><span>http://yahoo.com/</span></li> 
+      <li class="username" title="AOL screen name"> 
+    		<img src="{{ STATIC_URL }}images/openid/aolW.png" alt="icon" /><span>http://openid.aol.com/<strong>username</strong></span></li>
+      <li class="username first" title="MyOpenID user name"> 
+    		<img src="{{ STATIC_URL }}images/openid/myopenid.png" alt="icon" /><span>http://<strong>username</strong>.myopenid.com/</span></li> 
+      <li class="username" title="Flickr user name"> 
+    		<img src="{{ STATIC_URL }}images/openid/flickr.png" alt="icon" /><span>http://flickr.com/<strong>username</strong>/</span></li> 
+      <li class="username" title="Technorati user name"> 
+    		<img src="{{ STATIC_URL }}images/openid/technorati.png" alt="icon" /><span>http://technorati.com/people/technorati/<strong>username</strong>/</span></li> 
+      <li class="username" title="Wordpress blog name"> 
+    		<img src="{{ STATIC_URL }}images/openid/wordpress.png" alt="icon" /><span>http://<strong>username</strong>.wordpress.com</span></li> 
+      <li class="username" title="Blogger blog name"> 
+    		<img src="{{ STATIC_URL }}images/openid/blogger.png" alt="icon" /><span>http://<strong>username</strong>.blogspot.com/</span></li> 
+      <li class="username" title="LiveJournal blog name"> 
+    		<img src="{{ STATIC_URL }}images/openid/livejournal.png" alt="icon" /><span>http://<strong>username</strong>.livejournal.com</span></li> 
+      <li class="username" title="ClaimID user name"> 
+    		<img src="{{ STATIC_URL }}images/openid/claimid.png" alt="icon" /><span>http://claimid.com/<strong>username</strong></span></li> 
+      <li class="username" title="Vidoop user name"> 
+    		<img src="{{ STATIC_URL }}images/openid/vidoop.png" alt="icon" /><span>http://<strong>username</strong>.myvidoop.com/</span></li> 
+      <li class="username" title="Verisign user name"> 
+    		<img src="{{ STATIC_URL }}images/openid/verisign.png" alt="icon" /><span>http://<strong>username</strong>.pip.verisignlabs.com/</span></li> 
+      </ul></div> 
+      <fieldset> 
+      <label for="openid_url">Enter your <span>Provider user name</span></label> 
+      <div><span></span><input type="text" name="openid_username" /><span></span>
+              <a href="#" class="yum-button login"><span>Login »</span></a>
+      </div>
+      </fieldset>
+
+      <fieldset> 
+      <label for="openid_url">Enter your <a class="openid_logo" href="http://openid.net">OpenID</a></label>
+      <div><input type="text" name="openid_url" /><a href="#" class="yum-button login"><span>Login »</span></a></div>
+      </fieldset> 
+    </form>
+
+    
+    </div>
+    <div id="openid-help-wrapper">
+        <div id="openid-help">
+            <h3 id="why-use-openid-text">Why use OpenID?</h3>
+            <a href="#" class="close-bubble">Close</a>
+            <p>It’s a single username and password that allows you to log in to any OpenID-enabled site. It works on thousands of websites.</p>
+            <div class="action"><a href="http://openid.net/get-an-openid" target="_blank">Learn More</a> <span>or</span> <a href="#">Normal Signup</a></div>
+        </div>
+        <span id="thought-bubble-1"></span>
+        <span id="thought-bubble-2"></span>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block OLDbody %}
+    
+{% if openid and not user.is_authenticated %}
+        <p><span class="warning">It appears you have started to login using OpenID. Want to <a href="/openid/register/">finish logging in</a>?</span></p>
+    {% endif %}
+    
+    <h1>{% trans "Log In" %}</h1>
+    
+    {% if user.is_authenticated %}
+        {% user_display user as user_display %}
+        <p><span class="warning">{% trans "Note" %}</span>: {% blocktrans %}you are already logged in as {{ user_display }}.{% endblocktrans %}</p>
+    {% else %}
+        {% ifsetting ACCOUNT_OPEN_SIGNUP %}
+        {% url acct_signup as signup_url %}
+        <p>{% blocktrans %}Don't have an account? <a href="{{ signup_url }}">Sign up</a>!{% endblocktrans %}</p>
+        {% endifsetting %}
+    {% endif %}
+    
+    <form class="login uniForm" method="POST" action="{% url acct_login %}">
+        {% csrf_token %}
+        <fieldset class="inlineLabels">
+            <div class="form_block">
+                <a href="{% url acct_passwd_reset %}">{% trans "Forgot password?" %}</a>
+            </div>
+            {{ form|as_uni_form }}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <div class="form_block">
+                <input type="submit" value="{% trans "Log in &raquo;" %}" />
+            </div>
+        </fieldset>
+    </form>
+    
+    <p>{% trans "Or sign in with your OpenID" %}:</p>
+    {# @@@ why isn't this just does as a form object ? #}
+    <form class="login uniForm" action="/openid/register/" method="POST">
+        {% csrf_token %}
+        <fieldset class="inlineLabels">
+            {% if url_required %}
+                <div class="ctrlHolder error">
+                    <p class="errorField">
+                        <strong>This field is required.</strong>
+                    </p>
+                    <label for="id_username">* OpenID Identifier</label>
+                    <input class="openid" type="text" name="openid_url" />
+                </div>
+            {% else %}
+                <div class="ctrlHolder">
+                    <label for="id_username">* OpenID Identifier</label>
+                    <input class="openid" type="text" name="openid_url" />
+                </div>
+            {% endif %}
+            <div class="form_block">
+                <input type="submit" value="{% trans "Log in &raquo;" %}" />
+            </div>
+        </fieldset>
+    </form>
+    
+    <p>{% blocktrans %}If you have any trouble logging in to your account, contact us at <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.{% endblocktrans %}</p>
+
+{% endblock OLDbody %}
+
+{% block extra_body %}
+<script type="text/javascript">
+    $(function() {
+		$("a.login").click(function(){
+			$("#openid-form").submit();
+			return false;
+		})
+        $("form.openid:eq(0)").openid();
+        // $("form.openid:eq(1)").hide();
+        
+        $("#openid-help-wrapper #thought-bubble-2").fadeIn(function(){
+            $("#openid-help-wrapper #thought-bubble-1").fadeIn(function() {
+                $("#openid-help").fadeIn();
+            });
+        });
+        
+        $("#openid-help .close-bubble").click(function(){
+            $("#openid-help").fadeOut(function() {
+                $("#openid-help-wrapper #thought-bubble-1").fadeOut(function(){
+                    $("#openid-help-wrapper #thought-bubble-2").fadeOut();
+                });
+            });
+
+
+            return false;
+        })
+    });
+</script>
+
+<script>
+    $("#id_username").focus();
+</script>
+{% endblock extra_body %}

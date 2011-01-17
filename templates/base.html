@@ -1,0 +1,53 @@
+{% load i18n %}
+<!DOCTYPE HTML>
+<html lang="en-IE">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} : {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/ojax-main.css">
+	
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.openid.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/ojax-main.js"></script>
+	<style type="text/css">
+		/*html {background-image:url({#theme.background_image.url#});}*/
+	</style>
+	{% block extra_head_base %}
+        {% block extra_head %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+    <div id="header">
+        <div class="wrapper">
+            <a href="" id="main-logo"><img src="{{ STATIC_URL }}images/ucd-logo.png" alt="" /></a>
+
+            <div id="user-info">
+                <img src="{{ STATIC_URL }}images/user-thumbnail.png" alt="" class="user-thumbnail" />
+                <div id="user-controls">
+                    <div id="welcome-msg">Welcome <em>{{user}}</em></div>
+                    <!-- <a href="">Settings</a> | -->
+                    <a href="/profiles/edit/">Profile</a> | <a href="/openid/logout/?next={% url acct_logout %}">{% trans "Logout" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="position:absolute;background:rgba(0,0,0,0.1);height:96px;width:100%;z-index:-1"></div>
+
+    <div id="container">
+    	<ul id="navigation">
+            <li><a href="/projects/">Dashboard</a></li>
+    		<li><a href="/projects/">Projects</a></li>
+    		<!-- <li><a href="#">Messages</a></li> -->
+    	</ul>
+	{% block body %}
+    {% endblock %}
+    
+    </div>
+
+    {% block extra_body_base %}
+        {% block extra_body %}{% endblock %}
+    {% endblock %}
+    
+</body>
+</html>
