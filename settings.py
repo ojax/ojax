@@ -10,7 +10,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 # tells Pinax to use the default theme
 PINAX_THEME = "default"
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # tells Pinax to serve media through the staticfiles app.
@@ -49,7 +49,7 @@ TIME_ZONE = "Europe/Dublin"
 # http://blogs.law.harvard.edu/tech/stories/storyReader$15
 LANGUAGE_CODE = "en"
 
-SITE_ID = 2
+SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -119,6 +119,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
+    "staticfiles.context_processors.static_url",
     
     "pinax.core.context_processors.pinax_settings",
     
@@ -164,13 +165,13 @@ INSTALLED_APPS = [
     # non-pinax externals
     "djpubsubhubbub",
     "taggit",
-    "django_websocket",
+    # "django_websocket",
     
     # Ojax
     "activity",
     "projects",
     "themes",
-    "examples",
+    # "examples",
     "basic_profiles",
     "external_applications",
     

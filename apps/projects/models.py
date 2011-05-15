@@ -29,10 +29,12 @@ class Project(models.Model):
         
         for tag in project_tags.values():
             project_tag_list.append(tag['name'].lower())
+            
+        print project_tag_list
         
         if after_timestamp == 0:
-            return activity_model.objects.filter(tags__in=project_tag_list).order_by('-created').distinct()
+            return activity_model.objects.filter(tags__name__in=project_tag_list).order_by('-created').distinct()
         else:
             after_datetime = datetime.datetime.fromtimestamp(after_timestamp+1)
-            return activity_model.objects.filter(tags__in=project_tag_list, created__gt=after_datetime).order_by('-created').distinct()
+            return activity_model.objects.filter(tags__name__in=project_tag_list, created__gt=after_datetime).order_by('-created').distinct()
         

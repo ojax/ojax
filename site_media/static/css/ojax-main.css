@@ -576,6 +576,10 @@ form.openid input[type='submit'] {margin-left:1em;}
     border: none;
 }
 
+#login-container h2.normal-signup-heading {
+  display:none;
+}
+
 #openid-container {
     clear: both;
     margin: 0 20px;

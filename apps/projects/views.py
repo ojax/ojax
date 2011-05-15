@@ -14,7 +14,7 @@ from django.utils import simplejson
 def project_view(request, project_id, template_name="projects/project.html"):
     
     project = get_object_or_404(Project, id=project_id)
-    theme = Theme.objects.get(active=True)
+    # theme = Theme.objects.get(active=True)
     
     items = project.items()
     # last_updated_stamp = str(int(time.mktime(items[0].created.timetuple())))
@@ -25,7 +25,7 @@ def project_view(request, project_id, template_name="projects/project.html"):
     
     
     return render_to_response(template_name, {
-        "theme": theme,
+        # "theme": theme,
         "project": project,
         "items": items,
         "delicious_username": delicious_username,
