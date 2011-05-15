@@ -1,4 +1,5 @@
 from activity.models import Activity, ActivityComment
+from external_applications.models import ExternalApplication
 import datetime
 import dateutil.parser
 import dateutil.tz
@@ -35,13 +36,16 @@ def parse_date(s):
         dt = dt.astimezone(dateutil.tz.tzlocal()).replace(tzinfo=None)
     return dt
 
-def delicious(request):
+def delicious_fetch(request):
+    return delicious(request.GET['username'])
+
+def delicious(username):
     """
     Query the delicious JSON feed for user and populate a new activity object
     """
     
     # Request JSON feed for user
-    url = "http://feeds.delicious.com/v2/json/%s" % request.GET['username']
+    url = "http://feeds.delicious.com/v2/json/%s" % username
     data = urllib2.urlopen(url).read()
     delicious_bookmarks = simplejson.loads(data)
     
@@ -49,7 +53,7 @@ def delicious(request):
     
     try:
         # Set the `latest` date to the most recently created bookmark for the user
-        latest = Activity.objects.filter(username=request.GET['username'], source='delicious').order_by('-created')[0].created
+        latest = Activity.objects.filter(username=username, source='delicious').order_by('-created')[0].created
     except IndexError:
         # If there are no entries then set the latest date to 0
         latest = datetime.datetime.fromtimestamp(0)
@@ -90,4 +94,10 @@ def delicious(request):
             new_activities += 1
     
     # return the amount of activities that have been updated
-    return HttpResponse(simplejson.dumps(new_bookmarks), mimetype='application/javascript')
+    return HttpResponse(simplejson.dumps(new_activities), mimetype='application/javascript')
+    
+def all_delicious_accounts(request):
+    for account in ExternalApplication.objects.filter(application='delicious'):
+        delicious(account.username)
+        
+    return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
