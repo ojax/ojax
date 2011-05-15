@@ -6,7 +6,6 @@ import dateutil.tz
 import re
 from django.utils import simplejson
 import urllib2
-from BeautifulSoup import BeautifulStoneSoup
 from xml.dom.minidom import parse, parseString
 from django.http import HttpResponse, HttpResponseRedirect
 
