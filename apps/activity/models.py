@@ -4,7 +4,7 @@ import datetime
 import dateutil.parser
 import dateutil.tz
 
-from djpubsubhubbub import signals
+# from djpubsubhubbub import signals
 from django.contrib.auth.models import User
 
 
@@ -95,4 +95,4 @@ def parse_activitystream(sender, **kwargs):
     [Ac.tags.add(tag) for tag in ['fds', 'dferf', 'fd2rfw']]
     
 
-signals.updated.connect(parse_activitystream)
+# signals.updated.connect(parse_activitystream)

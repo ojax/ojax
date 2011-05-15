@@ -36,7 +36,7 @@ urlpatterns = patterns("",
     
     (r"^admin/", include(admin.site.urls)),
     
-    (r"^pshb/", include("djpubsubhubbub.urls")),
+    # (r"^pshb/", include("djpubsubhubbub.urls")),
     
     (r"^projects/", include("projects.urls")),
     (r"^activity/", include("activity.urls")),

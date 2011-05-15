@@ -163,7 +163,7 @@ INSTALLED_APPS = [
     "about",
     
     # non-pinax externals
-    "djpubsubhubbub",
+    # "djpubsubhubbub",
     "taggit",
     # "django_websocket",
     
