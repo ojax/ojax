@@ -37,10 +37,9 @@
 		<div id="filter-users-control" class="filter-options-container">
 			<h4>Users {# <a href="#">Manage Users</a> #}</h4>
 			<a href="#" class="filter-button all selected"><span>All</span></a>
-			<a href="#" class="filter-button" id="filter-user-Dave"><span>Dave J.</span></a>
-			<a href="#" class="filter-button" id="filter-user-Judith"><span>Judith W.</span></a>
-			<a href="#" class="filter-button" id="filter-user-{{request.user}}"><span>{{request.user}}</span></a>
-            {# <a href="#" class="filter-button" id="filter-user-3"><span>Martine McG.</span></a> #}
+			{% for user in users %}
+			  <a href="#" class="filter-button" id="filter-user-{{user}}"><span>{{user}}</span></a>
+			{% endfor %}
 		</div>
 		<div id="filter-type-control" class="filter-options-container">
 			<h4>Type {# <a href="#">Manage Apps</a> #}</h4>
@@ -57,10 +56,10 @@
 	<div id="activity-stream">
 		
 		{% for item in items %}
-			<div class="activity meta-user-{{item.username}} meta-type-{{item.type}} {% for tag in item.tags.all %}meta-tag-{{tag|lower}} {% endfor %}">
+			<div class="activity meta-user-{{item.user}} meta-type-{{item.type}} {% for tag in item.tags.all %}meta-tag-{{tag|lower}} {% endfor %}">
 		        <span class="activity-source"><span><img src="{{ STATIC_URL }}images/icons/{{item.source}}-24x24.png" alt="">{{item.type|capfirst}}</span></span>
 		        <a href="{% firstof item.url "#" %}" class="activity-title" title="{{item.title}}">{{item.title|truncatewords:3}}</a>
-		        <span class="activity-meta">— {{item.type|capfirst}} by {{item.username}}, <em id="timestamp-{{ item.created|date:"U" }}">{{ item.created|timesince }}</em> ago.</span>
+		        <span class="activity-meta">— {{item.type|capfirst}} by {{item.user}}, <em id="timestamp-{{ item.created|date:"U" }}">{{ item.created|timesince }}</em> ago.</span>
 		        <a href="#" class="yum-button comment"><span id="activity-timestamp-{% firstof item.activitycomment_set.latest.pub_date|date:"U" item.created|date:"U" %}">{{item.activitycomment_set.all.count}} Comments</span></a>
 		        <a href="#" class="actions"></a>
 		        

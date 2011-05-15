@@ -2,6 +2,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 from projects.models import Project
 from projects.forms import NewProjectForm
 from themes.models import Theme
+
+from django.contrib.auth.models import User
+
 from django.template import RequestContext
 import time
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,6 +21,15 @@ def project_view(request, project_id, template_name="projects/project.html"):
     
     items = project.items()
     # last_updated_stamp = str(int(time.mktime(items[0].created.timetuple())))
+    
+    user_objects = []
+    users = project.items().values("user")
+    user_list = set(v for d in users for k,v in d.items())
+    for user_id in user_list:
+        user_objects.append(User.objects.get(pk=user_id))
+    
+    
+    
     try:
         delicious_username = request.user.externalapplication_set.get(application='delicious').username
     except:
@@ -29,6 +41,7 @@ def project_view(request, project_id, template_name="projects/project.html"):
         "project": project,
         "items": items,
         "delicious_username": delicious_username,
+        "users": user_objects
     }, context_instance=RequestContext(request))
     
 

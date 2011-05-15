@@ -16,10 +16,21 @@ class Activity(models.Model):
     type = models.TextField(blank=True)
     url = models.TextField(blank=True)
     username = models.TextField(blank=True)
+    user = models.ForeignKey(User)
     source = models.TextField(blank=True)
     created = models.DateTimeField(blank=True, default=datetime.datetime.now)
     
     tags = TaggableManager()
+    
+    def save(self, *args, **kwargs):
+        ea_model = models.get_model('external_applications', 'ExternalApplication')
+        ea = ea_model.objects.filter(application=self.source, username=self.username)
+        if ea:
+            self.user = ea[0].user
+            
+        super(Activity, self).save(*args, **kwargs)
+
+            
 
     class Meta:
         verbose_name_plural = "Activities"
@@ -30,9 +41,9 @@ class Activity(models.Model):
         
 class ActivityComment(models.Model):
     belongs_to = models.ForeignKey(Activity)
-    author        = models.ForeignKey(User)
-    comment   = models.TextField(blank=False)
-    pub_date   = models.DateTimeField(blank=True, default=datetime.datetime.now)
+    author = models.ForeignKey(User)
+    comment = models.TextField(blank=False)
+    pub_date = models.DateTimeField(blank=True, default=datetime.datetime.now)
     
     class Meta:
         get_latest_by = "pub_date"
