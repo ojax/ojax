@@ -24,7 +24,7 @@ class Activity(models.Model):
     
     def save(self, *args, **kwargs):
         ea_model = models.get_model('external_applications', 'ExternalApplication')
-        ea = ea_model.objects.filter(application=self.source, username=self.username)
+        ea = ea_model.objects.filter(application=self.source, username__iexact=self.username)
         if ea:
             self.user = ea[0].user
             

@@ -3,8 +3,11 @@ from external_applications.models import ExternalApplication
 import datetime
 import dateutil.parser
 import dateutil.tz
+import re
 from django.utils import simplejson
 import urllib2
+from BeautifulSoup import BeautifulStoneSoup
+from xml.dom.minidom import parse, parseString
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.shortcuts import render_to_response, get_object_or_404
@@ -50,6 +53,8 @@ def delicious(username):
     delicious_bookmarks = simplejson.loads(data)
     
     new_activities = 0 # Initialise number of new activities for user
+    type = "bookmark"
+    source = "delicious"
     
     try:
         # Set the `latest` date to the most recently created bookmark for the user
@@ -62,8 +67,6 @@ def delicious(username):
     for bookmark in delicious_bookmarks:
         title = bookmark['d'].encode('utf8')
         subtitle = bookmark['n'].encode('utf8')
-        type = "bookmark"
-        source = "delicious"
         username = bookmark['a'].encode('utf8')
         url = bookmark['u'].encode('utf8')
         created = parse_date(bookmark['dt'].encode('utf8'))
@@ -101,3 +104,134 @@ def all_delicious_accounts(request):
         delicious(account.username)
         
     return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
+    
+def myexperiment_fetch(request):
+    return myexperiment(request.GET['username'])
+    
+def myexperiment(username):
+    page = urllib2.urlopen("http://www.myexperiment.org/user.xml?id=%s&elements=workflows,updated-at" % username)
+    details = parse(page)
+    
+    new_activities = 0 # Initialise number of new activities for user
+    type = "workflow"
+    source = "myexperiment"
+    
+    try:
+        # Set the `latest` date to the most recently created bookmark for the user
+        latest = Activity.objects.filter(username=username, source='myexperiment').order_by('-created')[0].created
+    except IndexError:
+        # If there are no entries then set the latest date to 0
+        latest = datetime.datetime.fromtimestamp(0)
+        
+    for workflow in details.getElementsByTagName('workflow'):
+        uri = workflow.getAttribute('uri')
+        workflow_page = urllib2.urlopen(uri)
+        workflow_details = parse(workflow_page)
+        
+        dt = parse_date(workflow_details.getElementsByTagName('created-at')[0].childNodes[0].data)
+    
+        if dt > latest:
+            
+            wf_url = workflow_details.getElementsByTagName('workflow')[0].getAttribute('resource')
+            try:
+              wf_title = workflow_details.getElementsByTagName('title')[0].childNodes[0].data
+            except:
+              wf_title = ""
+            try:
+              wf_subtitle = workflow_details.getElementsByTagName('description')[0].childNodes[0].data
+            except:
+              wf_subtitle = ""
+
+            wf_created = parse_date(workflow_details.getElementsByTagName('created-at')[0].childNodes[0].data)
+            
+            act = Activity.objects.create(
+                title = wf_title,
+                subtitle = wf_subtitle,
+                type = type,
+                source = source,
+                username = username,
+                url = wf_url,
+                created = wf_created
+            )
+            
+            # Add the tags to the activity object
+            for tag in workflow_details.getElementsByTagName('tag'):
+                clean_tag = tag.childNodes[0].data.lower()
+                act.tags.add(clean_tag)
+            
+            # Increase the new activities counter
+            new_activities += 1
+    
+    # return the amount of activities that have been updated
+    return HttpResponse(simplejson.dumps(new_activities), mimetype='application/javascript')
+    
+
+def all_myexperiment_accounts(request):
+    for account in ExternalApplication.objects.filter(application='myexperiment'):
+        myexperiment(account.username)
+
+    return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
+
+
+def twitter_fetch(request):
+    return twitter(request.GET['username'])
+
+def twitter(username):
+    # Request JSON feed for user
+    url = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s" % username
+    data = urllib2.urlopen(url).read()
+    tweets = simplejson.loads(data)
+    
+    new_activities = 0 # Initialise number of new activities for user
+    type = "status"
+    source = "twitter"
+    
+    try:
+        # Set the `latest` date to the most recently created bookmark for the user
+        latest = Activity.objects.filter(username=username, source='twitter').order_by('-created')[0].created
+    except IndexError:
+        # If there are no entries then set the latest date to 0
+        latest = datetime.datetime.fromtimestamp(0)
+        
+    for tweet in tweets:
+        title = tweet['text'].encode('utf8')
+        print title
+        subtitle = ""
+        username = tweet['user']['screen_name'].encode('utf8')
+        print username
+        url = "http://twitter.com/#!/"+username+"/status/"+str(tweet['id']).encode('utf8')
+        print url
+        created = parse_date(tweet['created_at'].encode('utf8'))
+        print created
+                
+        # If the bookmark was created *after* the previous update then:
+        if created > latest:
+            # add the bookmark as a new activity object
+            act = Activity.objects.create(
+                title = title,
+                subtitle = subtitle,
+                type = type,
+                source = source,
+                username = username,
+                url = url,
+                created = created
+            )
+            
+            tags = re.findall(r"#(\w+)", title)
+
+            # Add the tags to the activity object
+            for tag in tags:
+                clean_tag = tag.lower().encode('utf8')
+                act.tags.add(clean_tag)
+
+            # Increase the new activities counter
+            new_activities += 1
+
+    # return the amount of activities that have been updated
+    return HttpResponse(simplejson.dumps(new_activities), mimetype='application/javascript')
+
+def all_twitter_accounts(request):
+    for account in ExternalApplication.objects.filter(application='twitter'):
+        twitter(account.username)
+
+    return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')    
