@@ -7,7 +7,7 @@ See the website for more information: [http://www.ucd.ie/ojax/](http://www.ucd.i
 ## Note
 
 This is an old (but functional) branch of OJAX++. New changes are coming so it might be worth waiting until I have tested and committed the changes.
-Features that I haven't fully tested (like websockets) have been turned off in this branch, it also relies on older code for fetching activity from third-party APIs. I am working at testing the new features properly and moving to a node.js backend for scraping activities. You can [follow development of the new activity scraper](http://github.com/davej/node-wsscraper) if you're interested.
+Features that I haven't fully tested (like websockets) have been turned off in this branch, it also relies on older code for fetching activity from third-party APIs. I am working at testing the new features properly and moving to a node.js backend for scraping activities.
 
 ## License
 
