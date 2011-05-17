@@ -108,7 +108,7 @@ def myexperiment_fetch(request):
     return myexperiment(request.GET['username'])
     
 def myexperiment(username):
-    page2 = urllib2.urlopen("http://www.myexperiment.org/user.xml?id=%s&elements=workflows,updated-at" % username)
+    page = urllib2.urlopen("http://www.myexperiment.org/user.xml?id=%s&elements=workflows,updated-at" % username)
     details = parse(page)
     
     new_activities = 0 # Initialise number of new activities for user
