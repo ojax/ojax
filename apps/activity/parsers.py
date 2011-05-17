@@ -108,7 +108,7 @@ def myexperiment_fetch(request):
     return myexperiment(request.GET['username'])
     
 def myexperiment(username):
-    page = urllib2.urlopen("http://www.myexperiment.org/user.xml?id=%s&elements=workflows,updated-at" % username)
+    page2 = urllib2.urlopen("http://www.myexperiment.org/user.xml?id=%s&elements=workflows,updated-at" % username)
     details = parse(page)
     
     new_activities = 0 # Initialise number of new activities for user
@@ -233,4 +233,75 @@ def all_twitter_accounts(request):
     for account in ExternalApplication.objects.filter(application='twitter'):
         twitter(account.username)
 
-    return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')    
+    return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
+
+def connotea_fetch(request):
+    return connotea(request.GET['username'])
+
+def connotea(username):
+    url = 'http://www.connotea.org/data/user/%s' % username
+    auth_un = 'davej'
+    auth_pw = 'travis'
+    
+    req = urllib2.Request(url)
+    passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    passman.add_password(None, url, auth_un, auth_pw)
+    
+    authhandler = urllib2.HTTPBasicAuthHandler(passman) 
+    opener = urllib2.build_opener(authhandler)
+    
+    data = opener.open(url)
+    xml_data = parse(data)
+    
+    new_activities = 0 # Initialise number of new activities for user
+    type = "citation"
+    source = "connotea"
+    
+    try:
+        # Set the `latest` date to the most recently created bookmark for the user
+        latest = Activity.objects.filter(username=username, source='connotea').order_by('-created')[0].created
+    except IndexError:
+        # If there are no entries then set the latest date to 0
+        latest = datetime.datetime.fromtimestamp(0)
+   
+        
+    for post in xml_data.getElementsByTagName('Post'):
+        title = post.getElementsByTagName('title')[0].childNodes[0].data
+        print title
+        
+        try:
+            url = post.getElementsByTagName('uri')[0].getElementsByTagName('link')[0].childNodes[0].data
+        except:
+            url = ""
+        try:
+            subtitle = post.getElementsByTagName('description')[0].childNodes[0].data
+        except:
+            subtitle = ""
+        created = parse_date(post.getElementsByTagName('created')[0].childNodes[0].data)
+        
+        if created > latest:
+            act = Activity.objects.create(
+                title = title,
+                subtitle = subtitle,
+                type = type,
+                source = source,
+                username = username,
+                url = url,
+                created = created
+            )
+            
+            # Add the tags to the activity object
+            for tag in post.getElementsByTagName('dc:subject'):
+                clean_tag = tag.childNodes[0].data.lower()
+                act.tags.add(clean_tag)
+
+            # Increase the new activities counter
+            new_activities += 1
+            
+    return HttpResponse(simplejson.dumps(new_activities), mimetype='application/javascript')
+
+def all_connotea_accounts(request):
+    for account in ExternalApplication.objects.filter(application='connotea'):
+        connotea(account.username)
+
+    return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')

@@ -9,6 +9,9 @@ urlpatterns = patterns('activity.parsers',
 
     (r'^update_twitter/$', 'twitter_fetch', {}, 'update_twitter'),
     (r'^update_twitter/all/$', 'all_twitter_accounts', {}, 'update_all_twitter'),
+    
+    (r'^update_connotea/$', 'connotea_fetch', {}, 'update_connotea'),
+    (r'^update_connotea/all/$', 'all_connotea_accounts', {}, 'update_all_connotea'),
 
 
     (r'^make_comment/$', 'make_comment', {}, 'make_comment'),
