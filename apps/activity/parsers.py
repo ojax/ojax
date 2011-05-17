@@ -9,6 +9,11 @@ import urllib2
 from xml.dom.minidom import parse, parseString
 from django.http import HttpResponse, HttpResponseRedirect
 
+try:
+    from settings import connotea_auth_username, connotea_auth_password
+except:
+    pass
+
 from django.shortcuts import render_to_response, get_object_or_404
 
 
@@ -240,8 +245,14 @@ def connotea_fetch(request):
 
 def connotea(username):
     url = 'http://www.connotea.org/data/user/%s' % username
-    auth_un = 'davej'
-    auth_pw = 'travis'
+    
+    # Connotea login credentials should be stored in your settings or local_settings files
+    try:
+        auth_un = connotea_auth_username
+        auth_pw = connotea_auth_password
+    except:
+        auth_un = ""
+        auth_pw = ""
     
     req = urllib2.Request(url)
     passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
