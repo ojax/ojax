@@ -68,8 +68,11 @@ def profile_edit(request, form_class=ProfileForm, **kwargs):
         )
     
     profile = request.user.get_profile()
-    external_apps = request.user.externalapplication_set.filter(application='delicious')
-    print external_apps
+    
+    apps = request.user.externalapplication_set.filter().values('application')
+    app_list = [app['application'] for app in apps]
+        
+    print app_list
     
     if request.method == "POST":
         profile_form = form_class(request.POST, instance=profile)
@@ -85,5 +88,5 @@ def profile_edit(request, form_class=ProfileForm, **kwargs):
     return render_to_response(template_name, {
         "profile": profile,
         "profile_form": profile_form,
-        "delicious_app":external_apps,
+        "app_list":app_list,
     }, context_instance=RequestContext(request))

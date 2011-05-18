@@ -18,11 +18,14 @@ if settings.ACCOUNT_OPEN_SIGNUP:
 else:
     signup_view = "pinax.apps.signup_codes.views.signup"
 
-def my_view(request):
-    return redirect('/account/login/')
+def home_view(request):
+    if request.user.is_authenticated():
+        return redirect('/projects/')
+    else:
+        return redirect('/account/login/')
 
 urlpatterns = patterns("",
-    url(r"^$", my_view, name="home"),
+    url(r"^$", home_view, name="home"),
     
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
     url(r"^account/signup/$", signup_view, name="acct_signup"),
