@@ -1,7 +1,7 @@
 from django.contrib import admin
 from activity.models import Activity, ActivityComment
 
-class AuthorAdmin(admin.ModelAdmin):
+class ActivityAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
     list_filter = ('source', 'user')
 
