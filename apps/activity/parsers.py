@@ -105,7 +105,11 @@ def delicious(username):
     
 def all_delicious_accounts(request):
     for account in ExternalApplication.objects.filter(application='delicious'):
-        delicious(account.username)
+        if account.username:
+            try:
+                delicious(account.username)
+            except:
+                print "Skipping... Delicious - " + account.username
         
     return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
     
@@ -172,7 +176,11 @@ def myexperiment(username):
 
 def all_myexperiment_accounts(request):
     for account in ExternalApplication.objects.filter(application='myexperiment'):
-        myexperiment(account.username)
+        if account.username:
+            try:
+                myexperiment(account.username)
+            except:
+                print "Skipping... MyExperiment - " + account.username
 
     return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
 
@@ -236,7 +244,11 @@ def twitter(username):
 
 def all_twitter_accounts(request):
     for account in ExternalApplication.objects.filter(application='twitter'):
-        twitter(account.username)
+        if account.username:
+            try:
+                twitter(account.username)
+            except:
+                print "Skipping... Twitter - " + account.username
 
     return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')
 
@@ -313,6 +325,10 @@ def connotea(username):
 
 def all_connotea_accounts(request):
     for account in ExternalApplication.objects.filter(application='connotea'):
-        connotea(account.username)
+        if account.username:
+            try:
+                connotea(account.username)
+            except:
+                print "Skipping... Connotea - " + account.username
 
     return HttpResponse(simplejson.dumps(True), mimetype='application/javascript')

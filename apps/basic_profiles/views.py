@@ -72,8 +72,6 @@ def profile_edit(request, form_class=ProfileForm, **kwargs):
     apps = request.user.externalapplication_set.filter().values('application')
     app_list = [app['application'] for app in apps]
         
-    print app_list
-    
     if request.method == "POST":
         profile_form = form_class(request.POST, instance=profile)
         if profile_form.is_valid():
